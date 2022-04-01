@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.sip.ams.entities.Article;
+import com.sip.ams.entities.Provider;
 import com.sip.ams.repositories.ArticleRepository;
 import com.sip.ams.repositories.ProviderRepository;
 import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 @RestController
@@ -60,5 +63,11 @@ public class ArticleController {
 			articleRepository.delete(article);
 			return ResponseEntity.ok().build();
 		}).orElseThrow(() -> new IllegalArgumentException("Article not found with id " + articleId));
+	}
+	
+	@GetMapping("/get/{articleId}")
+	public Article getArticle(@PathVariable Long articleId) {
+		Optional<Article> a = articleRepository.findById(articleId);
+		return a.get();
 	}
 }
